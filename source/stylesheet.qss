@@ -1,0 +1,1483 @@
+/* ==========================================================================
+   Onyx — a qBittorrent theme built from the "qbittorent" dark concept.
+   qBittorrent 4.6+ / 5.x (Qt 6).  Resource paths use :/uitheme/ and are
+   quoted so the folder-theme mode also works from paths with spaces.
+
+   Tokens
+     chrome      #1F1F1F   details-panel tab buttons
+     card        #1E1E1E   top bar (menus + toolbar), sidebar, details panel, group boxes
+     content     #121212   transfer list and the canvas the cards float on (8px gaps),
+                           in the main window and in every dialog
+     divider     #0F0F0F
+     selection   #333333
+     inputs      #2E2E2E   every text box, spin box, drop-down and push button
+                           (a drop-down's popup frame is filled with this too)
+     radii       12 cards, 9 inputs and buttons, 8 row / item highlights
+     text        #FFFFFF / secondary #A1A1A6 / disabled #6E6E73
+     accent      #1C7C3E -> #279A4A (progress gradient; dark enough for white text)
+   ========================================================================== */
+
+* {
+    font-family: "Inter", "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", "Helvetica Neue", "Cantarell", "Noto Sans", sans-serif;
+    font-size: 10pt;
+    outline: none;
+}
+
+QWidget {
+    color: #FFFFFF;
+    selection-background-color: #3A7BD5;
+    selection-color: #FFFFFF;
+    /* Qt standard icons used by dialogs, path pickers and message boxes */
+    directory-icon: url(":/uitheme/icons/folder-documents.svg");
+    directory-open-icon: url(":/uitheme/icons/folder-documents.svg");
+    directory-closed-icon: url(":/uitheme/icons/folder-documents.svg");
+    file-icon: url(":/uitheme/icons/fileicon.svg");
+    messagebox-information-icon: url(":/uitheme/ui/msg-info.svg");
+    messagebox-question-icon: url(":/uitheme/ui/msg-question.svg");
+    messagebox-warning-icon: url(":/uitheme/icons/dialog-warning.svg");
+    messagebox-critical-icon: url(":/uitheme/icons/tracker-error.svg");
+    lineedit-clear-button-icon: url(":/uitheme/ui/close.svg");
+}
+
+QWidget:disabled {
+    color: #6E6E73;
+}
+
+/* the main window itself is the canvas: it shows in the gaps around the cards */
+QMainWindow {
+    background-color: #121212;
+}
+
+/* dialogs use the same canvas; their group boxes and lists are the cards */
+QDialog {
+    background-color: #121212;
+}
+
+/* MainWindow's central layout has fixed 7/3/5 px margins; the left and top ones
+   are part of the gaps around the floating cards */
+MainWindow #centralWidget {
+    background-color: #121212;
+}
+
+QMainWindow::separator {
+    background: #0F0F0F;
+    width: 1px;
+    height: 1px;
+}
+
+/* ============================================================ ITEM VIEWS == */
+
+QAbstractItemView {
+    background-color: #121212;
+    alternate-background-color: #161616;
+    border: 1px solid #2A2A2A;
+    border-radius: 8px;
+    color: #FFFFFF;
+    selection-background-color: #333333;
+    selection-color: #FFFFFF;
+    show-decoration-selected: 1;
+}
+
+QAbstractItemView::item {
+    padding: 4px 6px;
+    border: none;
+}
+
+QAbstractItemView::item:hover {
+    background-color: #1C1C1C;
+}
+
+QAbstractItemView::item:selected {
+    background-color: #333333;
+}
+
+MainWindow QAbstractItemView,
+PropertiesWidget QAbstractItemView {
+    border: none;
+    border-radius: 0;
+}
+
+/* lists, tables and trees in dialogs are cards; the padding keeps the opaque
+   viewport inside the rounded corners. Inside a group box (already a card) they
+   go one shade lighter. Drop-down popups are re-pinned in the INPUTS section. */
+QDialog QAbstractItemView {
+    background-color: #1E1E1E;
+    alternate-background-color: #222222;
+    border: none;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+QDialog QGroupBox QAbstractItemView {
+    background-color: #252525;
+    alternate-background-color: #2A2A2A;
+}
+
+QDialog QAbstractItemView::item:hover {
+    background-color: #262626;
+}
+
+QDialog QHeaderView,
+QDialog QHeaderView::section {
+    background-color: transparent;
+}
+
+QTreeView {
+    qproperty-allColumnsShowFocus: false;
+}
+
+QTreeView::branch {
+    background: transparent;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+    image: url(":/uitheme/ui/chevron-right-muted.svg");
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings {
+    image: url(":/uitheme/ui/chevron-down-muted.svg");
+}
+
+QTreeView::branch:selected {
+    background-color: #333333;
+}
+
+QHeaderView {
+    background-color: transparent;
+    border: none;
+}
+
+QHeaderView::section {
+    background-color: #121212;
+    color: #A1A1A6;
+    border: none;
+    border-right: 1px solid #2E2E2E;
+    margin: 5px 0;
+    padding: 2px 8px;
+}
+
+QHeaderView::section:last {
+    border-right: none;
+}
+
+QHeaderView::section:hover {
+    color: #FFFFFF;
+}
+
+QHeaderView::down-arrow {
+    image: url(":/uitheme/ui/sort-down.svg");
+    width: 14px;
+    height: 14px;
+    subcontrol-position: center right;
+    right: 6px;
+    top: 1px;
+}
+
+QHeaderView::up-arrow {
+    image: url(":/uitheme/ui/sort-up.svg");
+    width: 14px;
+    height: 14px;
+    subcontrol-position: center right;
+    right: 6px;
+    top: 1px;
+}
+
+QTableView {
+    gridline-color: #232323;
+}
+
+QTableCornerButton::section {
+    background-color: #121212;
+    border: none;
+}
+
+/* ============================================================ SCROLLBARS == */
+
+/* 10px bars with a 2px gutter -> 8px handles; the radius has to stay <= 4px
+   (Qt silently drops radii larger than half the handle thickness) */
+QScrollBar:vertical {
+    background: transparent;
+    width: 10px;
+    margin: 3px 2px 3px 0;
+}
+
+QScrollBar:horizontal {
+    background: transparent;
+    height: 10px;
+    margin: 0 3px 2px 3px;
+}
+
+TransferListWidget QScrollBar:horizontal {
+    margin: 0 16px 2px 16px;
+}
+
+QScrollBar::handle {
+    background-color: #3C3C3C;
+    border: none;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    min-height: 36px;
+}
+
+QScrollBar::handle:horizontal {
+    min-width: 36px;
+}
+
+QScrollBar::handle:hover {
+    background-color: #4A4A4A;
+}
+
+QScrollBar::handle:pressed {
+    background-color: #575757;
+}
+
+QScrollBar::add-line,
+QScrollBar::sub-line {
+    width: 0;
+    height: 0;
+    border: none;
+    background: none;
+}
+
+QScrollBar::add-page,
+QScrollBar::sub-page {
+    background: none;
+}
+
+QAbstractScrollArea::corner {
+    background: transparent;
+}
+
+/* ---------------------------------------------------------------- menu bar */
+
+/* The menu bar is the top half of one floating card; the main toolbar is the bottom
+   half. Qt lays menu items out from the left margin + border (both on all sides, and
+   once more below them), so the card is inset with padding + background-clip instead
+   and has no outline. margin-top only moves the painted card down; the items sit at
+   the very top and get their room from the item margin. */
+/* spacing is pinned because styles differ (Fusion 6px, Windows 11 none); it also
+   insets the first item from the card edge, in line with the first toolbar button */
+QMenuBar {
+    background-color: #1E1E1E;
+    background-clip: content;
+    border: none;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    margin: 8px 0 0 0;
+    padding: 0 8px;
+    spacing: 6px;
+}
+
+QMenuBar::item {
+    background: transparent;
+    color: #D8D8D8;
+    padding: 5px 10px;
+    margin-top: 13px;
+    border-radius: 8px;
+}
+
+QMenuBar::item:selected {
+    background-color: #2E2E2E;
+    color: #FFFFFF;
+}
+
+QMenuBar::item:pressed {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+/* ------------------------------------------------------------------- menus */
+
+/* The Windows 11 style gives popups a drop shadow offset 3px down/right. Without
+   room for it inside the popup window it is clipped by the window edge and draws a
+   square bottom-right corner, so the panel leaves a 6px transparent gutter there. */
+QMenu {
+    background-color: #2E2E2E;
+    border: 1px solid #2E2E2E;
+    border-radius: 12px;
+    padding: 6px;
+    margin: 0 6px 6px 0;
+}
+
+QMenu::item {
+    background: transparent;
+    color: #FFFFFF;
+    padding: 6px 28px 6px 10px;
+    border-radius: 8px;
+    margin: 1px 0;
+}
+
+QMenu::item:selected {
+    background-color: #3D3D3D;
+}
+
+QMenu::item:disabled {
+    color: #6E6E73;
+}
+
+QMenu::icon {
+    padding-left: 8px;
+}
+
+QMenu::separator {
+    height: 1px;
+    background: #3A3A3A;
+    margin: 5px 8px;
+}
+
+QMenu::indicator {
+    width: 16px;
+    height: 16px;
+    padding-left: 6px;
+}
+
+QMenu::indicator:non-exclusive:checked {
+    image: url(":/uitheme/ui/menu-check.svg");
+}
+
+QMenu::indicator:exclusive:checked {
+    image: url(":/uitheme/ui/menu-radio.svg");
+}
+
+QMenu::right-arrow {
+    image: url(":/uitheme/ui/chevron-right-muted.svg");
+    width: 14px;
+    height: 14px;
+    padding-right: 6px;
+}
+
+/* ---------------------------------------------------------------- tool bar */
+
+/* note: Qt uses the *left* padding as the toolbar frame on all four sides */
+QToolBar {
+    background-color: #1F1F1F;
+    border: none;
+    padding: 5px;
+    spacing: 2px;
+    qproperty-iconSize: 26px 26px;
+}
+
+/* The main toolbar is the bottom half of the floating card (see the menu bar).
+   Qt uses one inset on all four sides (the left padding), so its 8px puts the
+   buttons flush with the card's side edges. The first and last buttons get extra
+   margin to match the menu items' 6px. The first is found by its text, which only
+   works in English; elsewhere it just sits at the card edge. The bottom margin
+   balances the card's padding with the space above the menu text. */
+MainWindow > QToolBar {
+    background-color: #1E1E1E;
+    border: none;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin: 0 8px 3px 8px;
+    padding: 8px;
+}
+
+MainWindow > QToolBar > QToolButton[text="Open"] {
+    margin-left: 6px;
+}
+
+MainWindow > QToolBar > QToolButton[popupMode="MenuButtonPopup"] {
+    margin-right: 6px;
+}
+
+QToolBar::separator {
+    background-color: #2E2E2E;
+    width: 1px;
+    margin: 7px 9px;
+}
+
+QToolBar::handle {
+    width: 0;
+    image: none;
+}
+
+QToolBar QToolButton {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 0 1px;
+    color: #FFFFFF;
+}
+
+QToolBar QToolButton:hover {
+    background-color: #2B2B2B;
+}
+
+QToolBar QToolButton:pressed,
+QToolBar QToolButton:checked {
+    background-color: #363636;
+}
+
+/* the lock button carries a small menu (set / clear password) */
+QToolBar QToolButton[popupMode="MenuButtonPopup"] {
+    padding-right: 17px;
+}
+
+QToolBar QToolButton::menu-button {
+    border: none;
+    width: 14px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+QToolBar QToolButton::menu-button:hover {
+    background-color: #333333;
+}
+
+QToolBar QToolButton::menu-arrow {
+    image: url(":/uitheme/ui/chevron-down-muted.svg");
+    width: 12px;
+    height: 12px;
+}
+
+QToolBar QToolButton::menu-arrow:open {
+    top: 1px;
+}
+
+/* torrent filter box ("Search...") */
+QToolBar QLineEdit {
+    background-color: #2E2E2E;
+    border: 1px solid #2E2E2E;
+    border-radius: 9px;
+    padding: 5px 10px 5px 6px;
+    min-height: 22px;
+    min-width: 230px;
+    max-width: 230px;
+    color: #FFFFFF;
+    selection-background-color: #3A7BD5;
+}
+
+QToolBar QLineEdit:hover {
+    border-color: #3D3D3D;
+}
+
+QToolBar QLineEdit:focus {
+    border-color: #4A4A4A;
+    background-color: #333333;
+}
+
+/* "Filter by:" label hidden (the concept shows a bare search box);
+   the Name / Save path chooser stays as quiet text */
+QToolBar QLabel {
+    color: transparent;
+    max-width: 0px;
+    padding: 0;
+    margin: 0;
+}
+
+QToolBar QComboBox {
+    background-color: #2E2E2E;
+    border: 1px solid #2E2E2E;
+    border-radius: 9px;
+    color: #C5C5C5;
+    /* extra right padding: the combo sizes itself to its longest entry, and the
+       popup list (same width) needs room for its own gutter + padding */
+    padding: 5px 14px 5px 10px;
+    min-width: 60px;
+    min-height: 22px;
+}
+
+QToolBar QComboBox:hover {
+    border-color: #3D3D3D;
+    color: #FFFFFF;
+}
+
+/* the arrow sits 10px in from the edge, like the text on the left; the edit field
+   already stops 14px short of the drop-down, so moving it left can't overlap the text */
+QToolBar QComboBox::drop-down {
+    border: none;
+    width: 16px;
+    subcontrol-position: center right;
+    right: 8px;
+}
+
+/* ----------------------------------------------------- main tab widget */
+
+QTabWidget::pane {
+    border: none;
+    background: transparent;
+}
+
+QTabWidget::tab-bar {
+    left: 12px;
+}
+
+QTabBar {
+    background: transparent;
+    qproperty-drawBase: 0;
+}
+
+QTabBar::tab {
+    background: transparent;
+    color: #A1A1A6;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 16px;
+    margin: 6px 3px;
+}
+
+QTabBar::tab:hover {
+    background-color: #2A2A2A;
+    color: #FFFFFF;
+}
+
+QTabBar::tab:selected {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+QTabBar::close-button {
+    image: url(":/uitheme/ui/close.svg");
+    subcontrol-position: right;
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+}
+
+QTabBar::close-button:hover {
+    image: url(":/uitheme/ui/close-hover.svg");
+}
+
+QTabBar::scroller {
+    width: 22px;
+}
+
+QTabBar QToolButton {
+    background-color: #1F1F1F;
+    border: none;
+    border-radius: 6px;
+}
+
+QTabBar QToolButton::left-arrow {
+    image: url(":/uitheme/ui/chevron-right-muted.svg");
+}
+
+/* --------------------------------------------------------------- splitters */
+
+MainWindow QSplitter {
+    background-color: #121212;
+}
+
+QSplitter::handle {
+    background-color: #0F0F0F;
+}
+
+QSplitter::handle:horizontal {
+    width: 4px;
+}
+
+QSplitter::handle:vertical {
+    height: 4px;
+}
+
+/* the handles between the sidebar, the list and the details panel are part of
+   the gaps between the cards */
+MainWindow QSplitter::handle {
+    background-color: #121212;
+}
+
+/* ============================================================== SIDEBAR === */
+
+TransferListFiltersWidget {
+    min-width: 232px;
+}
+
+/* The sidebar floats: its scroll area is drawn as a rounded card with 8px gaps to
+   the window edges, the top card and the list (counting the central widget's 7/3px
+   margins, the toolbar's 3px bottom margin and the 4px splitter handle).
+   The vertical padding keeps the viewport clear of the rounded corners, and the
+   viewport and its page stay transparent so the corners show through. */
+TransferListFiltersWidget QScrollArea {
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 12px;
+    margin: 2px 4px 8px 1px;
+    padding: 4px 0;
+}
+
+TransferListFiltersWidget QScrollArea > QWidget,
+TransferListFiltersWidget QScrollArea > QWidget > QWidget {
+    background-color: transparent;
+}
+
+/* section headers: "Status", "Categories", "Tags", "Trackers".
+   qBittorrent draws a tree-branch arrow in the check indicator slot; the indicator
+   is stretched across the row (and the label pulled back with a negative spacing)
+   so the chevron sits on the right edge like in the concept, as far in from the
+   card's right edge as the title is from its left. */
+TransferListFiltersWidget QCheckBox {
+    color: #FFFFFF;
+    font-size: 11.5pt;
+    font-weight: 600;
+    text-transform: none;
+    padding: 14px 0 6px 18px;
+    spacing: -186px;
+    min-width: 186px;
+}
+
+TransferListFiltersWidget QCheckBox::indicator {
+    width: 186px;
+    height: 18px;
+}
+
+TransferListFiltersWidget QCheckBox::branch:open {
+    image: url(":/uitheme/ui/chevron-down.svg");
+    image-position: right center;
+}
+
+TransferListFiltersWidget QCheckBox::branch:closed {
+    image: url(":/uitheme/ui/chevron-right.svg");
+    image-position: right center;
+}
+
+TransferListFiltersWidget QCheckBox:hover {
+    color: #E6E6E6;
+}
+
+/* filter lists: hover / selection are pills inset 8px from both card edges
+   (32px rows, so a 16px radius gives fully round ends) */
+TransferListFiltersWidget QListView,
+TransferListFiltersWidget QTreeView {
+    background-color: transparent;
+    alternate-background-color: transparent;
+    border: none;
+    padding: 0;
+    min-width: 214px;
+    qproperty-iconSize: 20px 20px;
+    show-decoration-selected: 1;
+}
+
+TransferListFiltersWidget QListView::item,
+TransferListFiltersWidget QTreeView::item {
+    color: #FFFFFF;
+    background: transparent;
+    border: none;
+    border-radius: 16px;
+    height: 22px;
+    padding: 5px 12px 5px 10px;
+    margin: 0 8px;
+}
+
+TransferListFiltersWidget QListView::item:hover,
+TransferListFiltersWidget QTreeView::item:hover {
+    background-color: #262626;
+}
+
+TransferListFiltersWidget QListView::item:selected,
+TransferListFiltersWidget QTreeView::item:selected {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+/* the branch column must stay clear, or a selected sub-category gets a square block
+   left of its pill */
+TransferListFiltersWidget QTreeView::branch,
+TransferListFiltersWidget QTreeView::branch:selected {
+    background-color: transparent;
+}
+
+/* ========================================================= TRANSFER LIST == */
+
+TransferListWidget {
+    background-color: #121212;
+    alternate-background-color: #121212;
+    border: none;
+    padding: 0 14px 0 14px;
+    qproperty-iconSize: 0px 0px;
+}
+
+/* no 'color' here: row text colours come from config.json (TransferList.*) */
+TransferListWidget::item {
+    border: none;
+    height: 22px;
+    padding: 7px 8px;
+}
+
+TransferListWidget::item:hover {
+    background-color: #1A1A1A;
+}
+
+TransferListWidget::item:selected {
+    background-color: #262626;
+}
+
+TransferListWidget::item:selected:hover {
+    background-color: #2C2C2C;
+}
+
+/* Each cell paints its own highlight, so the row's ends are rounded through the
+   first / last visible cell. While columns run past the right edge the row is
+   cut off there, so that end stays square. */
+TransferListWidget::item:first {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+TransferListWidget::item:last {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+TransferListWidget::item:only-one {
+    border-radius: 8px;
+}
+
+TransferListWidget QHeaderView,
+TransferListWidget QHeaderView::section {
+    background-color: #121212;
+}
+
+TransferListWidget QHeaderView::section {
+    color: #FFFFFF;
+    font-weight: normal;
+    border: none;
+    border-right: 1px solid #333333;
+    margin: 9px 0 8px 0;
+    padding: 4px 8px 3px 8px;
+}
+
+TransferListWidget QHeaderView::section:last {
+    border-right: none;
+}
+
+/* In-cell progress bars are drawn through a hidden, parentless QProgressBar. Qt sizes
+   the percentage's box with that widget's font (these QProgressBar rules) but paints
+   the text in the transfer list's own font, top-aligned in that box. Both come from
+   the 10pt "*" rule; keep fonts off these rules or the text shifts or gets clipped.
+   The box is centred on the cell, and the digits sit ~1.5px below the middle of the
+   line box, so the uneven top/bottom margins centre the bar on the digits (and on
+   the row's other text). The chunk greens keep white text at 3.6:1 contrast or better. */
+/* the groove is a light tint rather than a colour, so it shows on the list (comes
+   out #1E1E1E), on the details card and on highlighted rows alike */
+QProgressBar {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 6px;
+    color: #FFFFFF;
+    text-align: center;
+    margin: 9px 10px 6px 10px;
+}
+
+QProgressBar::chunk {
+    border-radius: 6px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #1C7C3E, stop: 1 #279A4A);
+}
+
+QProgressBar::chunk:disabled {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #3A3A3E, stop: 1 #4C4C52);
+}
+
+QProgressBar:disabled {
+    color: #C7C7CC;
+}
+
+/* regular progress bars inside dialogs keep their full size */
+QWidget QProgressBar {
+    margin: 0;
+    min-height: 18px;
+}
+
+/* ====================================================== PROPERTIES PANEL == */
+
+/* PropertiesWidget is a plain QWidget subclass: it only paints a stylesheet
+   background when auto-fill is switched on, and only as a plain rectangle. So it
+   stays the canvas colour: its tab pages form the floating card, and the tab
+   buttons (which have no container of their own) sit on the canvas below it. */
+PropertiesWidget {
+    background-color: #121212;
+    qproperty-autoFillBackground: true;
+}
+
+/* the tab bar layout adds 5px above and below, so 3px margins put the buttons
+   8px under the card and 8px above the window edge, level with the sidebar card */
+PropertiesWidget > QPushButton {
+    background-color: #1F1F1F;
+    color: #E8E8E8;
+    border: none;
+    border-radius: 9px;
+    padding: 8px 15px;
+    margin: 3px 6px 3px 6px;
+    qproperty-iconSize: 18px 18px;
+}
+
+PropertiesWidget > QPushButton:hover {
+    background-color: #282828;
+    color: #FFFFFF;
+}
+
+PropertiesWidget > QPushButton:checked {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+PropertiesWidget > QPushButton:pressed {
+    background-color: #3A3A3A;
+}
+
+/* the details card: 8px below the list (with the 4px splitter handle), right edge
+   in line with the top card; the padding keeps the pages clear of the corners */
+PropertiesWidget > QStackedWidget {
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 12px;
+    margin: 4px 3px 0 0;
+    padding: 8px;
+}
+
+PropertiesWidget QStackedWidget > QWidget,
+PropertiesWidget QScrollArea,
+PropertiesWidget QScrollArea > QWidget,
+PropertiesWidget QScrollArea > QWidget > QWidget {
+    background-color: transparent;
+    border: none;
+}
+
+/* lists, headers and text panes on the card */
+PropertiesWidget QAbstractItemView,
+PropertiesWidget QHeaderView,
+PropertiesWidget QHeaderView::section,
+PropertiesWidget QTextEdit {
+    background-color: #1E1E1E;
+    alternate-background-color: #222222;
+}
+
+PropertiesWidget QTextEdit {
+    border: none;
+}
+
+PropertiesWidget QAbstractItemView::item:hover {
+    background-color: #262626;
+}
+
+/* rounded row highlights, as in the transfer list. The branch column stays clear,
+   or a nested row gets a square block beside its pill. */
+PropertiesWidget QTreeView::item:first {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+PropertiesWidget QTreeView::item:last {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+PropertiesWidget QTreeView::item:only-one {
+    border-radius: 8px;
+}
+
+PropertiesWidget QTreeView::branch:selected {
+    background-color: transparent;
+}
+
+PropertiesWidget QGroupBox {
+    background-color: #232323;
+}
+
+PropertiesWidget SpeedPlotView {
+    background-color: #1E1E1E;
+    border: none;
+}
+
+/* file lists (Content tab, add-torrent dialog) get the transfer list's 36px rows,
+   so their in-cell progress bars come out the same size (at ~27px the bar was a
+   10px sliver with the percentage spilling out) */
+TorrentContentWidget::item {
+    height: 22px;
+    padding: 7px 6px;
+}
+
+/* ============================================================= STATUS BAR == */
+
+QStatusBar {
+    background-color: #1E1E1E;
+    border-top: 1px solid #0F0F0F;
+    color: #FFFFFF;
+    min-height: 40px;
+}
+
+QStatusBar::item {
+    border: none;
+}
+
+QStatusBar QLabel {
+    color: #FFFFFF;
+    background: transparent;
+    padding: 0 14px;
+}
+
+QStatusBar QPushButton {
+    background: transparent;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    margin: 4px 2px;
+}
+
+QStatusBar QPushButton:hover {
+    background-color: #2B2B2B;
+}
+
+QStatusBar QPushButton:pressed {
+    background-color: #333333;
+}
+
+QStatusBar QFrame[frameShape="VLine"] {
+    border: none;
+    background: transparent;
+    max-width: 0px;
+    margin: 0 6px;
+}
+
+/* =============================================================== BUTTONS == */
+
+/* buttons share the inputs' look: one fill, an outline in the same colour (so
+   nothing shifts when it lights up), the 9px radius. The default button (OK)
+   is deliberately not marked out. */
+QPushButton {
+    background-color: #2E2E2E;
+    color: #FFFFFF;
+    border: 1px solid #2E2E2E;
+    border-radius: 9px;
+    padding: 6px 16px;
+    min-height: 18px;
+}
+
+QPushButton:hover {
+    background-color: #383838;
+    border-color: #383838;
+}
+
+QPushButton:pressed {
+    background-color: #404040;
+    border-color: #404040;
+}
+
+QPushButton:checked {
+    background-color: #3A3A3A;
+    border-color: #3A3A3A;
+}
+
+QPushButton:disabled {
+    background-color: #2A2A2A;
+    border-color: #2A2A2A;
+    color: #6E6E73;
+}
+
+QPushButton:flat {
+    background: transparent;
+    border: none;
+}
+
+QPushButton::menu-indicator {
+    image: url(":/uitheme/ui/chevron-down-muted.svg");
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 12px;
+    height: 12px;
+    right: -6px;
+}
+
+QToolButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 4px;
+    color: #FFFFFF;
+}
+
+QToolButton:hover {
+    background-color: #2E2E2E;
+}
+
+QToolButton:pressed,
+QToolButton:checked {
+    background-color: #383838;
+}
+
+QToolButton::menu-indicator {
+    image: url(":/uitheme/ui/chevron-down-muted.svg");
+    width: 10px;
+    height: 10px;
+    subcontrol-position: bottom right;
+}
+
+QDialogButtonBox {
+    button-layout: 0;
+}
+
+/* ================================================================ INPUTS == */
+
+/* Every input looks like the toolbar's Filter box: #2E2E2E, an outline in the same
+   colour that only shows on hover / focus (grey, never green), the 9px radius. */
+QLineEdit,
+QAbstractSpinBox,
+QTextEdit,
+QPlainTextEdit {
+    background-color: #2E2E2E;
+    color: #FFFFFF;
+    border: 1px solid #2E2E2E;
+    border-radius: 9px;
+    padding: 5px 10px;
+}
+
+QTextEdit,
+QPlainTextEdit {
+    padding: 6px 8px;
+}
+
+QLineEdit:hover,
+QAbstractSpinBox:hover,
+QTextEdit:hover,
+QPlainTextEdit:hover {
+    border-color: #3D3D3D;
+}
+
+QLineEdit:focus,
+QAbstractSpinBox:focus,
+QTextEdit:focus,
+QPlainTextEdit:focus {
+    border-color: #4A4A4A;
+    background-color: #333333;
+}
+
+/* #2A2A2A stays visible on the lighter nested cards */
+QLineEdit:disabled,
+QAbstractSpinBox:disabled,
+QTextEdit:disabled,
+QPlainTextEdit:disabled {
+    background-color: #2A2A2A;
+    color: #6E6E73;
+    border-color: #2A2A2A;
+}
+
+QLineEdit:read-only {
+    background-color: #2A2A2A;
+    border-color: #2A2A2A;
+}
+
+/* read-only text panes used for info (e.g. log, about); the details panel's are
+   styled with its card */
+QTextBrowser {
+    background-color: #121212;
+    border: none;
+}
+
+QAbstractSpinBox {
+    padding-right: 26px;
+}
+
+QAbstractSpinBox::up-button,
+QAbstractSpinBox::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background: transparent;
+}
+
+QAbstractSpinBox::up-button {
+    subcontrol-position: top right;
+    border-top-right-radius: 9px;
+}
+
+QAbstractSpinBox::down-button {
+    subcontrol-position: bottom right;
+    border-bottom-right-radius: 9px;
+}
+
+QAbstractSpinBox::up-button:hover,
+QAbstractSpinBox::down-button:hover {
+    background-color: #383838;
+}
+
+QAbstractSpinBox::up-arrow {
+    image: url(":/uitheme/ui/chevron-up-muted.svg");
+    width: 12px;
+    height: 12px;
+}
+
+QAbstractSpinBox::down-arrow {
+    image: url(":/uitheme/ui/chevron-down-muted.svg");
+    width: 12px;
+    height: 12px;
+}
+
+QAbstractSpinBox::up-arrow:disabled,
+QAbstractSpinBox::up-arrow:off {
+    image: url(":/uitheme/ui/chevron-up-disabled.svg");
+}
+
+QAbstractSpinBox::down-arrow:disabled,
+QAbstractSpinBox::down-arrow:off {
+    image: url(":/uitheme/ui/chevron-down-disabled.svg");
+}
+
+/* the fill never changes on focus: Qt fills the drop-down's popup frame with it */
+QComboBox {
+    background-color: #2E2E2E;
+    color: #FFFFFF;
+    border: 1px solid #2E2E2E;
+    border-radius: 9px;
+    padding: 5px 28px 5px 10px;
+    min-height: 18px;
+}
+
+QComboBox:hover {
+    border-color: #3D3D3D;
+}
+
+QComboBox:on,
+QComboBox:focus {
+    border-color: #4A4A4A;
+}
+
+QComboBox:disabled {
+    background-color: #2A2A2A;
+    color: #6E6E73;
+    border-color: #2A2A2A;
+}
+
+/* editable combo boxes (save-path pickers, category) take their minimum width
+   from the longest entry; an explicit minimum lets dialogs shrink them instead
+   of pushing half the dialog off-screen */
+QComboBox:editable {
+    padding-left: 6px;
+    min-width: 120px;
+}
+
+/* arrow 10px in from the edge, as in the toolbar */
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 24px;
+    border: none;
+    right: 4px;
+}
+
+QComboBox::down-arrow {
+    image: url(":/uitheme/ui/chevron-down-muted.svg");
+    width: 14px;
+    height: 14px;
+}
+
+QComboBox::down-arrow:disabled {
+    image: url(":/uitheme/ui/chevron-down-disabled.svg");
+}
+
+/* Drop-down lists. The list itself is the visible (rounded) surface. Qt fills the
+   popup window behind it with the combo box's own background colour, so every combo
+   box uses the same #2E2E2E: with the Windows 11 style the popup window is
+   transparent and the corners come out round; with Fusion the corners are filled
+   with the same colour and the popup reads as one clean surface. */
+QComboBox {
+    combobox-popup: 0;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #2E2E2E;
+    border: 1px solid #2E2E2E;
+    border-radius: 12px;
+    padding: 4px;
+    margin: 0 6px 6px 0;
+    outline: none;
+    selection-background-color: #3D3D3D;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 26px;
+    padding: 2px 10px;
+    border-radius: 8px;
+    color: #FFFFFF;
+}
+
+QComboBox QAbstractItemView::item:selected,
+QComboBox QAbstractItemView::item:hover {
+    background-color: #3D3D3D;
+}
+
+/* the dialog list rules (ITEM VIEWS) would repaint drop-down lists inside dialogs;
+   same specificity, later in the file, so this wins */
+QDialog QComboBox QAbstractItemView {
+    background-color: #2E2E2E;
+    border: 1px solid #2E2E2E;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+QDialog QComboBox QAbstractItemView::item:selected,
+QDialog QComboBox QAbstractItemView::item:hover {
+    background-color: #3D3D3D;
+}
+
+/* ---------------------------------------------------- check / radio boxes */
+
+QCheckBox,
+QRadioButton {
+    spacing: 8px;
+    background: transparent;
+}
+
+QCheckBox::indicator,
+QRadioButton::indicator,
+QGroupBox::indicator,
+QAbstractItemView::indicator {
+    width: 16px;
+    height: 16px;
+}
+
+QCheckBox::indicator,
+QGroupBox::indicator,
+QAbstractItemView::indicator {
+    background-color: #2E2E2E;
+    border: 1px solid #4A4A4A;
+    border-radius: 5px;
+}
+
+QCheckBox::indicator:hover,
+QGroupBox::indicator:hover,
+QAbstractItemView::indicator:hover {
+    border-color: #6A6A6A;
+}
+
+QCheckBox::indicator:checked,
+QGroupBox::indicator:checked,
+QAbstractItemView::indicator:checked {
+    background-color: #41A55B;
+    border-color: #41A55B;
+    image: url(":/uitheme/ui/check.svg");
+}
+
+QCheckBox::indicator:indeterminate,
+QAbstractItemView::indicator:indeterminate {
+    background-color: #41A55B;
+    border-color: #41A55B;
+    image: url(":/uitheme/ui/dash.svg");
+}
+
+QCheckBox::indicator:disabled,
+QGroupBox::indicator:disabled,
+QAbstractItemView::indicator:disabled {
+    background-color: #242424;
+    border-color: #333333;
+}
+
+QCheckBox::indicator:checked:disabled,
+QGroupBox::indicator:checked:disabled {
+    image: url(":/uitheme/ui/check-disabled.svg");
+}
+
+QRadioButton::indicator {
+    background-color: #2E2E2E;
+    border: 1px solid #4A4A4A;
+    border-radius: 9px;
+}
+
+QRadioButton::indicator:hover {
+    border-color: #6A6A6A;
+}
+
+QRadioButton::indicator:checked {
+    background-color: #41A55B;
+    border-color: #41A55B;
+    image: url(":/uitheme/ui/radio-dot.svg");
+}
+
+QRadioButton::indicator:disabled {
+    background-color: #242424;
+    border-color: #333333;
+}
+
+/* ------------------------------------------------------------- group box */
+
+/* group boxes are the dialogs' cards (title above the card, like the sidebar's
+   section headers); a box inside a box goes one shade lighter per level */
+QGroupBox {
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 12px;
+    margin-top: 24px;
+    padding: 10px 12px 8px 12px;
+}
+
+QGroupBox QGroupBox {
+    background-color: #252525;
+}
+
+QGroupBox QGroupBox QGroupBox {
+    background-color: #2B2B2B;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 6px;
+    top: 2px;
+    padding: 0 4px;
+    color: #FFFFFF;
+    font-weight: 600;
+    background: transparent;
+}
+
+QGroupBox:disabled::title {
+    color: #6E6E73;
+}
+
+/* ---------------------------------------------------------------- slider */
+
+QSlider::groove:horizontal {
+    height: 4px;
+    background-color: #333333;
+    border-radius: 2px;
+}
+
+QSlider::sub-page:horizontal {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #1C7C3E, stop: 1 #279A4A);
+    border-radius: 2px;
+}
+
+QSlider::handle:horizontal {
+    background-color: #FFFFFF;
+    width: 14px;
+    height: 14px;
+    margin: -5px 0;
+    border-radius: 7px;
+}
+
+QSlider::groove:vertical {
+    width: 4px;
+    background-color: #333333;
+    border-radius: 2px;
+}
+
+QSlider::handle:vertical {
+    background-color: #FFFFFF;
+    width: 14px;
+    height: 14px;
+    margin: 0 -5px;
+    border-radius: 7px;
+}
+
+/* ----------------------------------------------------------- misc frames */
+
+QToolTip {
+    background-color: #2C2C2E;
+    color: #FFFFFF;
+    border: 1px solid #3A3A3C;
+    border-radius: 8px;
+    padding: 6px 8px;
+}
+
+QFrame[frameShape="HLine"] {
+    border: none;
+    background-color: #2A2A2A;
+    max-height: 1px;
+}
+
+QFrame[frameShape="VLine"] {
+    border: none;
+    background-color: #2A2A2A;
+    max-width: 1px;
+}
+
+QScrollArea {
+    background: transparent;
+    border: none;
+}
+
+QScrollArea > QWidget > QWidget {
+    background: transparent;
+}
+
+QLabel {
+    background: transparent;
+}
+
+QSizeGrip {
+    image: none;
+    width: 0;
+    height: 0;
+}
+
+/* ============================================================ OPTIONS etc == */
+
+/* Options opens at least this big: with the theme's 10pt text and roomier inputs
+   the pages need ~1000px, and at qBittorrent's own 779px they scrolled sideways */
+OptionsDialog {
+    min-width: 1000px;
+    min-height: 700px;
+}
+
+/* The page list is a compact card like the main sidebar, with icon + text rows,
+   fixed at 120px + padding ("Connection" gets even insets).
+   qBittorrent sets every entry's height in code (~63px with the System style, sized
+   for icon-above-text tiles), so a stylesheet item height is ignored. The grid puts
+   the rows on a 40px pitch instead. Each entry is still 63px tall and overlaps the
+   next row, so the uneven margins draw the 34px pill, and centre the text, in its
+   own row's top 40px. */
+OptionsDialog QListWidget {
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 12px;
+    padding: 6px;
+    min-width: 120px;
+    max-width: 120px;
+    qproperty-iconSize: 20px 20px;
+    qproperty-viewMode: ListMode;
+    qproperty-gridSize: 120px 40px;
+}
+
+OptionsDialog QListWidget::item {
+    padding: 0 10px;
+    border-radius: 8px;
+    margin: 4px 0 25px 0;
+}
+
+OptionsDialog QSplitter::handle {
+    background-color: #121212;
+}
+
+OptionsDialog QListWidget::item:selected {
+    background-color: #333333;
+}
+
+OptionsDialog QListWidget::item:hover:!selected {
+    background-color: #262626;
+}
+
+OptionsDialog QScrollArea,
+OptionsDialog QScrollArea > QWidget > QWidget,
+OptionsDialog QStackedWidget,
+OptionsDialog QStackedWidget > QWidget {
+    background: transparent;
+}
+
+/* the Advanced page's editors sit in fixed-height table rows; at full input
+   height their text was cut off */
+AdvancedSettings QAbstractSpinBox,
+AdvancedSettings QComboBox,
+AdvancedSettings QLineEdit {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+/* Execution log / RSS / Search tabs */
+LogListView,
+ExecutionLogWidget QListView {
+    background-color: #121212;
+    border: none;
+}
+
+QCalendarWidget QWidget#qt_calendar_navigationbar {
+    background-color: #1F1F1F;
+}
+
+QCalendarWidget QAbstractItemView {
+    border: none;
+    border-radius: 0;
+}
+
