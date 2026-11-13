@@ -15,6 +15,9 @@
      radii       12 cards, 9 inputs and buttons, 8 row / item highlights
      text        #FFFFFF / secondary #A1A1A6 / disabled #6E6E73
      accent      #1C7C3E -> #279A4A (progress gradient; dark enough for white text)
+     controls    #356EBF   checked checkboxes / radio buttons, slider fill: the dark end
+                           of the qBittorrent logo's gradient (white marks on it: 5.1:1);
+                           menu check marks use its light end, #72B4F5 (ui/menu-*.svg)
    ========================================================================== */
 
 * {
@@ -639,8 +642,9 @@ TransferListFiltersWidget QCheckBox:hover {
     color: #E6E6E6;
 }
 
-/* filter lists: hover / selection are pills inset 8px from both card edges
-   (32px rows, so a 16px radius gives fully round ends) */
+/* filter lists: hover / selection are pills inset 8px from both card edges.
+   Each 32px pill has 1px above and below it (34px rows), so a hovered pill next to
+   the selected one keeps a 2px gap; the 16px radius gives fully round ends. */
 TransferListFiltersWidget QListView,
 TransferListFiltersWidget QTreeView {
     background-color: transparent;
@@ -660,7 +664,7 @@ TransferListFiltersWidget QTreeView::item {
     border-radius: 16px;
     height: 22px;
     padding: 5px 12px 5px 10px;
-    margin: 0 8px;
+    margin: 1px 8px;
 }
 
 TransferListFiltersWidget QListView::item:hover,
@@ -1222,6 +1226,14 @@ QRadioButton {
     background: transparent;
 }
 
+/* in dialogs, 3px above and below put checkbox rows 30px apart (24px without), and
+   the right margin keeps a field that follows on the same row 12px away, not 6px */
+QDialog QCheckBox,
+QDialog QRadioButton {
+    padding: 3px 0;
+    margin-right: 6px;
+}
+
 QCheckBox::indicator,
 QRadioButton::indicator,
 QGroupBox::indicator,
@@ -1247,16 +1259,26 @@ QAbstractItemView::indicator:hover {
 QCheckBox::indicator:checked,
 QGroupBox::indicator:checked,
 QAbstractItemView::indicator:checked {
-    background-color: #41A55B;
-    border-color: #41A55B;
+    background-color: #356EBF;
+    border-color: #356EBF;
     image: url(":/uitheme/ui/check.svg");
 }
 
 QCheckBox::indicator:indeterminate,
 QAbstractItemView::indicator:indeterminate {
-    background-color: #41A55B;
-    border-color: #41A55B;
+    background-color: #356EBF;
+    border-color: #356EBF;
     image: url(":/uitheme/ui/dash.svg");
+}
+
+/* a set box lightens one step towards the logo's light blue under the mouse */
+QCheckBox::indicator:checked:hover:enabled,
+QGroupBox::indicator:checked:hover:enabled,
+QAbstractItemView::indicator:checked:hover:enabled,
+QCheckBox::indicator:indeterminate:hover:enabled,
+QAbstractItemView::indicator:indeterminate:hover:enabled {
+    background-color: #417CCA;
+    border-color: #417CCA;
 }
 
 QCheckBox::indicator:disabled,
@@ -1282,9 +1304,14 @@ QRadioButton::indicator:hover {
 }
 
 QRadioButton::indicator:checked {
-    background-color: #41A55B;
-    border-color: #41A55B;
+    background-color: #356EBF;
+    border-color: #356EBF;
     image: url(":/uitheme/ui/radio-dot.svg");
+}
+
+QRadioButton::indicator:checked:hover:enabled {
+    background-color: #417CCA;
+    border-color: #417CCA;
 }
 
 QRadioButton::indicator:disabled {
@@ -1312,6 +1339,8 @@ QGroupBox QGroupBox QGroupBox {
     background-color: #2B2B2B;
 }
 
+/* note: Qt draws (and sizes) a group box title in the group box's own font and ignores
+   font properties on ::title, so a title font is set on the QGroupBox itself */
 QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top left;
@@ -1319,12 +1348,69 @@ QGroupBox::title {
     top: 2px;
     padding: 0 4px;
     color: #FFFFFF;
-    font-weight: 600;
     background: transparent;
 }
 
 QGroupBox:disabled::title {
     color: #6E6E73;
+}
+
+/* Dialogs (Options and the rest) are laid out as sections.
+   A top-level group box is a card with its title above it: 8px above the card and
+   26px below whatever comes before (6px layout spacing + 20px), so it reads as the
+   heading of the card under it. The title (or a checkable title's box) and the card's
+   contents share one left edge, 21px in: 12px padding + the layouts' 9px margin.
+   A group box inside a card is a sub-section, not another card: no fill, its title on
+   the parent's left edge (a checkable one lines up with the checkboxes around it), and
+   its contents indented to where checkbox text starts: 18px box (16 + border) + 8px
+   spacing = 26px, i.e. 17px padding + the 9px margin. Its 16px top margin + the 9px
+   margin start the first child 6px under the title row, like any other row. */
+QDialog QGroupBox {
+    margin-top: 48px;
+    padding: 12px;
+    font-size: 11pt;
+    font-weight: 600;
+}
+
+QDialog QGroupBox::title {
+    left: 21px;
+    top: 20px;
+    padding: 0;
+}
+
+/* Qt resolves a child's unset font attributes against its parent's font, so without
+   this the heading weight could spread to everything in the card ("*" only sets the
+   family and size). No qBittorrent 5.2.3 layout makes a widget inside a group box bold. */
+QDialog QGroupBox QWidget {
+    font-weight: normal;
+}
+
+QDialog QGroupBox QGroupBox {
+    background-color: transparent;
+    border-radius: 0;
+    margin-top: 16px;
+    padding: 0 0 0 17px;
+    font-size: 10pt;
+    font-weight: 600;
+}
+
+/* Qt centres a title in a box the base style makes wider than the text, which pushes a
+   checkable title's text ~3.5px right of where a checkbox's text starts; 4px spacing
+   (the checkboxes have 8px) puts it back in line (measured: median -0.5px) */
+QDialog QGroupBox QGroupBox::title {
+    left: 0;
+    top: 0;
+    spacing: 4px;
+}
+
+/* a checkable sub-section's title is a parent checkbox, so it keeps the regular weight */
+QDialog QGroupBox QGroupBox[checkable="true"] {
+    font-weight: normal;
+}
+
+/* labels keep 12px (6px + the layout's 6px) from the field they name */
+QDialog QLabel {
+    margin-right: 6px;
 }
 
 /* ---------------------------------------------------------------- slider */
@@ -1336,7 +1422,7 @@ QSlider::groove:horizontal {
 }
 
 QSlider::sub-page:horizontal {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #1C7C3E, stop: 1 #279A4A);
+    background-color: #356EBF;
     border-radius: 2px;
 }
 
@@ -1456,6 +1542,14 @@ OptionsDialog QStackedWidget > QWidget {
     background: transparent;
 }
 
+/* controls placed straight on a page, outside any section card, start on the cards'
+   content edge (the 9px page margin + 21px), in line with the section titles */
+OptionsDialog QScrollArea > QWidget > QWidget > QCheckBox,
+OptionsDialog QScrollArea > QWidget > QWidget > QRadioButton,
+OptionsDialog QScrollArea > QWidget > QWidget > QLabel {
+    margin-left: 21px;
+}
+
 /* the Advanced page's editors sit in fixed-height table rows; at full input
    height their text was cut off */
 AdvancedSettings QAbstractSpinBox,
@@ -1463,6 +1557,11 @@ AdvancedSettings QComboBox,
 AdvancedSettings QLineEdit {
     padding-top: 1px;
     padding-bottom: 1px;
+}
+
+AdvancedSettings QCheckBox {
+    padding: 0;
+    margin-right: 0;
 }
 
 /* Execution log / RSS / Search tabs */

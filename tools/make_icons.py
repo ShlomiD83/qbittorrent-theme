@@ -30,6 +30,12 @@ PURPLE = "#BF5AF2"
 TEAL = "#64D2FF"
 INDIGO = "#7D7AFF"
 
+# The qBittorrent logo is a #72B4F5 -> #356EBF gradient
+# (dist/unix/menuicons/scalable/apps/qbittorrent.svg). Checkbox / radio fills use the
+# dark end (in the stylesheet). Menu check marks have no box behind them, so they use
+# the light end to stay legible on the #2E2E2E menu (6.2:1; the dark end is 2.7:1).
+LOGO_BLUE_LIGHT = "#72B4F5"
+
 
 def material(name):
     svg = (MATERIAL / f"{name}.svg").read_text(encoding="utf-8")
@@ -181,10 +187,10 @@ UI_GLYPHS = {
     "sort-up": custom(stroke("M6.5 14.5 12 9l5.5 5.5", 3.0), "#FFFFFF"),
     "check": custom(stroke("M6 12.4l3.9 3.9L18 8.2", 2.6), "#FFFFFF"),
     "check-disabled": custom(stroke("M6 12.4l3.9 3.9L18 8.2", 2.6), "#6E6E73"),
-    "menu-check": custom(stroke("M6 12.4l3.9 3.9L18 8.2", 2.4), "#4CD964"),
+    "menu-check": custom(stroke("M6 12.4l3.9 3.9L18 8.2", 2.4), LOGO_BLUE_LIGHT),
     "dash": custom('<rect x="6.5" y="10.9" width="11" height="2.2" rx="1.1"/>', "#FFFFFF"),
     "radio-dot": custom('<circle cx="12" cy="12" r="4.6"/>', "#FFFFFF"),
-    "menu-radio": custom('<circle cx="12" cy="12" r="4"/>', "#4CD964"),
+    "menu-radio": custom('<circle cx="12" cy="12" r="4"/>', LOGO_BLUE_LIGHT),
     "close": custom(stroke("M7.5 7.5l9 9M16.5 7.5l-9 9", 2.0), "#A1A1A6"),
     "close-hover": custom(stroke("M7.5 7.5l9 9M16.5 7.5l-9 9", 2.0), "#FFFFFF"),
     "msg-info": wrap(material("info"), "#0A84FF"),
