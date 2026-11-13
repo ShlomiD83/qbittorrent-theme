@@ -1,7 +1,7 @@
-# Onyx — a qBittorrent theme
+# Nightseed — a qBittorrent theme
 
 A dark qBittorrent theme built from the "qbittorent" concept
-(`73065792-…png` in this folder). The menus and toolbar share one floating
+(`inspiration.png` in this folder). The menus and toolbar share one floating
 rounded card. The sidebar and the torrent details panel are cards too, and all
 of them sit on a near-black canvas with the transfer list. It has green gradient
 progress bars, rounded row and pill-shaped selections, and colour-coded Material
@@ -15,13 +15,13 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
 ## Install
 
 1. Open qBittorrent → **Tools → Options → Behavior → Interface**.
-2. Tick **Use custom UI Theme** and browse to **`Onyx.qbtheme`** in this folder.
+2. Tick **Use custom UI Theme** and browse to **`Nightseed.qbtheme`** in this folder.
 3. In the same section, set **Style: System** and **Color scheme: Dark** (for a
    dark title bar). On Windows, qBittorrent 5.x defaults to *Fusion*, so pick
    System explicitly; see below.
 4. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
 
-If you delete or move `Onyx.qbtheme` later, qBittorrent falls back to its default look.
+If you delete or move `Nightseed.qbtheme` later, qBittorrent falls back to its default look.
 
 ### Optional: closer to the concept
 
@@ -76,7 +76,7 @@ menus and drop-downs come out with square corners.
 ## Folder layout
 
 ```
-Onyx.qbtheme          ready-to-load theme (what you select in qBittorrent)
+Nightseed.qbtheme     ready-to-load theme (what you select in qBittorrent)
 source/
   stylesheet.qss      the Qt stylesheet (all layout / widget styling)
   config.json         palette + state colours read by qBittorrent
@@ -85,7 +85,7 @@ source/
   resources.qrc       generated file list for rcc
 tools/
   make_icons.py       regenerates icons/ and ui/ from the mapping inside it
-  build_theme.py      packs source/ into Onyx.qbtheme and verifies it
+  build_theme.py      packs source/ into Nightseed.qbtheme and verifies it
   material-icons/     Material Icons (Round) sources + Apache-2.0 LICENSE
 ```
 

@@ -1,4 +1,4 @@
-"""Pack source/ into Onyx.qbtheme (a Qt binary resource bundle).
+"""Pack source/ into Nightseed.qbtheme (a Qt binary resource bundle).
 
 qBittorrent registers the bundle with QResource::registerResource(file, "/uitheme"),
 i.e. it maps the bundle's root to :/uitheme itself -- so the files must be stored
@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "source"
-OUTPUT = ROOT / "Onyx.qbtheme"
+OUTPUT = ROOT / "Nightseed.qbtheme"
 QRC = SOURCE / "resources.qrc"
 
 

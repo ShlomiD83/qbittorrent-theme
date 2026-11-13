@@ -1,4 +1,4 @@
-"""Generate the Onyx icon set for qBittorrent.
+"""Generate the Nightseed icon set for qBittorrent.
 
 Every qBittorrent icon id is mapped either to a Material Icons (Round) glyph from
 tools/material-icons/round (Apache-2.0, see tools/material-icons/LICENSE) or to a
