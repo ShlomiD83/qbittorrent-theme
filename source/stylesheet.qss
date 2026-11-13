@@ -46,6 +46,40 @@ QWidget:disabled {
     color: #6E6E73;
 }
 
+/* qBittorrent asks for some Qt standard icons without naming a widget, and Qt only
+   applies the *-icon properties above when it knows the widget, so those come from
+   Windows as glossy 3D shell icons. Where the widget has a name, its own icon / pixmap
+   property is replaced instead. A qproperty- value is set once, when Qt first styles
+   the widget, so it only wins if qBittorrent put the native icon there before that. */
+
+/* the browse button of every path field: its icon is set in the field's constructor,
+   always before the button is styled, and never changed */
+FileSystemPathEdit > QToolButton {
+    qproperty-icon: url(":/uitheme/icons/folder-documents.svg");
+}
+
+/* the confirmation before an automatic exit / shutdown (32px): set right after setupUi,
+   before anything lays the dialog out */
+ShutdownConfirmDialog #warningLabel {
+    qproperty-pixmap: url(":/uitheme/ui/warning-32.svg");
+}
+
+/* Options > Downloads, the warning beside "Delete .torrent files afterwards": this page
+   is styled during setupUi (laying out its scroll area does it), before qBittorrent sets
+   the native pixmap, so that one can't be replaced. The icon label is collapsed instead
+   and the text label next to it, shown and hidden with it, draws the flat icon. */
+OptionsDialog #deleteTorrentWarningIcon {
+    max-width: 0px;
+    margin: 0;
+}
+
+OptionsDialog #deleteTorrentWarningLabel {
+    background-image: url(":/uitheme/ui/warning-critical-16.svg");
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 22px;
+}
+
 /* the main window itself is the canvas: it shows in the gaps around the cards */
 QMainWindow {
     background-color: #121212;

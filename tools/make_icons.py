@@ -42,9 +42,11 @@ def material(name):
     return re.search(r"<svg[^>]*>(.*)</svg>", svg, re.S).group(1)
 
 
-def wrap(inner, color, transform=None):
+def wrap(inner, color, transform=None, size=24):
+    # size only sets the SVG's own width/height: a QPixmap loaded from it (qproperty-pixmap
+    # in the stylesheet) comes out at that size, while QIcon scales it freely
     body = f'<g transform="{transform}">{inner}</g>' if transform else inner
-    return ('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" '
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 24 24" '
             f'fill="{color}">{body}</svg>\n')
 
 
@@ -195,6 +197,10 @@ UI_GLYPHS = {
     "close-hover": custom(stroke("M7.5 7.5l9 9M16.5 7.5l-9 9", 2.0), "#FFFFFF"),
     "msg-info": wrap(material("info"), "#0A84FF"),
     "msg-question": wrap(material("help_outline"), "#0A84FF"),
+    # fixed-size stand-ins for the Windows warning icons qBittorrent puts on two labels
+    # (same glyphs and colours as the tracker-error / dialog-warning icons)
+    "warning-critical-16": wrap(material("error"), RED, size=16),
+    "warning-32": wrap(material("warning"), YELLOW, size=32),
     "grip": custom('<circle cx="12" cy="7" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="17" r="1.3"/>', "#3A3A3A"),
 }
 

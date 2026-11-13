@@ -112,5 +112,7 @@
     <file>ui/radio-dot.svg</file>
     <file>ui/sort-down.svg</file>
     <file>ui/sort-up.svg</file>
+    <file>ui/warning-32.svg</file>
+    <file>ui/warning-critical-16.svg</file>
   </qresource>
 </RCC>
