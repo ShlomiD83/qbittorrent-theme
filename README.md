@@ -7,10 +7,21 @@ of them sit on a near-black canvas with the transfer list. It has green gradient
 progress bars, rounded row and pill-shaped selections, and colour-coded Material
 icons in Apple's palette.
 
-![preview](preview.png)
+![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](showcase/01-hero.png)
 
 Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
 5.x. It should also load on 4.6.x (also Qt 6), but that is untested.
+
+## Screenshots
+
+<p align="center">
+  <img src="showcase/02-transfers.png" width="49%" alt="Transfer list with gradient progress bars">
+  <img src="showcase/03-filters.png" width="49%" alt="Sidebar filters with pill-shaped selections">
+  <img src="showcase/04-details.png" width="49%" alt="Details panel with the speed graph">
+  <img src="showcase/05-menus.png" width="49%" alt="Right-click menu and a submenu">
+  <img src="showcase/06-settings.png" width="49%" alt="Options dialog, Behavior page">
+  <img src="showcase/07-add-torrent.png" width="49%" alt="Add torrent dialog">
+</p>
 
 ## Install
 
@@ -87,6 +98,7 @@ tools/
   make_icons.py       regenerates icons/ and ui/ from the mapping inside it
   build_theme.py      packs source/ into Nightseed.qbtheme and verifies it
   material-icons/     Material Icons (Round) sources + Apache-2.0 LICENSE
+showcase/             screenshots used in this README
 ```
 
 ## Editing the theme
