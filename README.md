@@ -7,7 +7,7 @@ of them sit on a near-black canvas with the transfer list. It has green gradient
 progress bars, rounded row and pill-shaped selections, and colour-coded Material
 icons in Apple's palette.
 
-![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](showcase/01-hero.png)
+![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](showcase/01-hero.webp)
 
 Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
 5.x. It should also load on 4.6.x (also Qt 6), but that is untested.
@@ -15,22 +15,24 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
 ## Screenshots
 
 <p align="center">
-  <img src="showcase/02-transfers.png" width="49%" alt="Transfer list with gradient progress bars">
-  <img src="showcase/03-filters.png" width="49%" alt="Sidebar filters with pill-shaped selections">
-  <img src="showcase/04-details.png" width="49%" alt="Details panel with the speed graph">
-  <img src="showcase/05-menus.png" width="49%" alt="Right-click menu and a submenu">
-  <img src="showcase/06-settings.png" width="49%" alt="Options dialog, Behavior page">
-  <img src="showcase/07-add-torrent.png" width="49%" alt="Add torrent dialog">
+  <img src="showcase/02-transfers.webp" width="49%" alt="Transfer list with gradient progress bars">
+  <img src="showcase/03-filters.webp" width="49%" alt="Sidebar filters with pill-shaped selections">
+  <img src="showcase/04-details.webp" width="49%" alt="Details panel with the speed graph">
+  <img src="showcase/05-menus.webp" width="49%" alt="Right-click menu and a submenu">
+  <img src="showcase/06-settings.webp" width="49%" alt="Options dialog, Behavior page">
+  <img src="showcase/07-add-torrent.webp" width="49%" alt="Add torrent dialog">
 </p>
 
 ## Install
 
-1. Open qBittorrent → **Tools → Options → Behavior → Interface**.
-2. Tick **Use custom UI Theme** and browse to **`Nightseed.qbtheme`** in this folder.
-3. In the same section, set **Style: System** and **Color scheme: Dark** (for a
+1. Download [**Nightseed.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed.qbtheme)
+   from the latest release.
+2. Open qBittorrent → **Tools → Options → Behavior → Interface**.
+3. Tick **Use custom UI Theme** and browse to the downloaded **`Nightseed.qbtheme`**.
+4. In the same section, set **Style: System** and **Color scheme: Dark** (for a
    dark title bar). On Windows, qBittorrent 5.x defaults to *Fusion*, so pick
    System explicitly; see below.
-4. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
+5. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
 
 If you delete or move `Nightseed.qbtheme` later, qBittorrent falls back to its default look.
 
@@ -88,6 +90,7 @@ menus and drop-downs come out with square corners.
 
 ```
 Nightseed.qbtheme     ready-to-load theme (what you select in qBittorrent)
+LICENSE               MIT License
 source/
   stylesheet.qss      the Qt stylesheet (all layout / widget styling)
   config.json         palette + state colours read by qBittorrent
@@ -97,8 +100,11 @@ source/
 tools/
   make_icons.py       regenerates icons/ and ui/ from the mapping inside it
   build_theme.py      packs source/ into Nightseed.qbtheme and verifies it
+  make_webp.py        writes the .webp copies of the showcase/ screenshots
   material-icons/     Material Icons (Round) sources + Apache-2.0 LICENSE
-showcase/             screenshots used in this README
+showcase/             .png screenshots + the .webp copies this README shows
+.github/workflows/
+  release.yml         publishes each changed Nightseed.qbtheme as a release
 ```
 
 ## Editing the theme
@@ -113,12 +119,20 @@ showcase/             screenshots used in this README
   `python tools/make_icons.py`.
 - **Rebuild the .qbtheme**: `pip install PySide6-Essentials` (this provides
   Qt's `rcc`), then run `python tools/build_theme.py`.
+- **Publish**: push the rebuilt `Nightseed.qbtheme` to `main`. A GitHub Action
+  then publishes it as a new release; the download link under Install always
+  serves the newest one, and older releases stay available.
+- **Screenshots**: after replacing a PNG in `showcase/`, run
+  `python tools/make_webp.py` (needs `pip install Pillow`) to refresh the
+  .webp copy the README shows.
 
 Note for anyone building themes by hand: qBittorrent mounts a `.qbtheme` at
 `:/uitheme` itself. The `.qrc` must therefore not add a `/uitheme` prefix,
 despite what some guides say. Otherwise nothing loads.
 
-## Credits
+## License and credits
+
+Nightseed is released under the [MIT License](LICENSE).
 
 Icons are based on Google's [Material Icons](https://fonts.google.com/icons)
 (Round), licensed under Apache 2.0 (see `tools/material-icons/LICENSE`).

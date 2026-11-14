@@ -1,0 +1,81 @@
+# Publishes Nightseed.qbtheme as a new GitHub release whenever the committed file
+# changes on main. Older releases are kept; this link always serves the newest:
+# https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed.qbtheme
+#
+# It publishes the file exactly as committed, so rebuild it first
+# (python tools/build_theme.py) after changing source/.
+
+name: Release theme
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Nightseed.qbtheme
+      - .github/workflows/release.yml
+  workflow_dispatch: # "Run workflow" button on the Actions tab
+
+permissions:
+  contents: write # create tags and releases
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      ASSET: Nightseed.qbtheme
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # all history and tags, for the version check and the notes
+
+      - name: Check the file is a Qt resource bundle
+        run: |
+          if [ "$(head -c 4 "$ASSET")" != "qres" ]; then
+            echo "::error::$ASSET is not a Qt binary resource file"
+            exit 1
+          fi
+
+      - name: Publish a release if the file differs from the latest one
+        run: |
+          set -euo pipefail
+
+          prev=$(gh release view --json tagName --jq .tagName 2>/dev/null || true)
+          if [ -n "$prev" ] &&
+             gh release download "$prev" --pattern "$ASSET" --output "$RUNNER_TEMP/prev.qbtheme" &&
+             cmp -s "$ASSET" "$RUNNER_TEMP/prev.qbtheme"; then
+            echo "$ASSET is the same as in $prev; nothing to publish."
+            exit 0
+          fi
+
+          # Date-based version: v2026.11.14, then v2026.11.14.2 for a second release that day
+          base="v$(date -u +%Y.%m.%d)"
+          tag=$base
+          n=2
+          while git rev-parse -q --verify "refs/tags/$tag" >/dev/null; do
+            tag="$base.$n"
+            n=$((n + 1))
+          done
+
+          {
+            if [ -n "$prev" ]; then
+              echo "Changes since $prev:"
+              echo
+              git log --format='- %s' "$prev..HEAD" -- source "$ASSET" || true
+            else
+              echo "First release."
+            fi
+            echo
+            echo "To install, download **$ASSET** below and follow the [install steps](https://github.com/$GITHUB_REPOSITORY#install)."
+          } > "$RUNNER_TEMP/notes.md"
+
+          gh release create "$tag" "$ASSET" \
+            --target "$GITHUB_SHA" \
+            --title "Nightseed ${tag#v}" \
+            --notes-file "$RUNNER_TEMP/notes.md" \
+            --latest
