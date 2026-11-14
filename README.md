@@ -30,13 +30,10 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
    from the latest release.
 2. Open qBittorrent → **Tools → Options → Behavior → Interface**.
 3. Tick **Use custom UI Theme** and browse to the downloaded **`Nightseed.qbtheme`**.
-4. In the same section, set **Color scheme: Dark** for a dark title bar, and
-   choose a **Style**:
-   - **Fusion** (recommended; qBittorrent's default on Windows): menus and
-     drop-down lists have square corners.
-   - **System**: menus and drop-down lists get rounded corners, but Qt also
-     gives them a faint drop shadow, a light rim along the bottom and right
-     edges that a theme can't turn off.
+4. In the same section, set **Style: System** (recommended) and **Color scheme:
+   Dark** (for a dark title bar).
+   - **Fusion** works too, and qBittorrent itself recommends it for Windows dark
+     mode, but with this theme its menus and drop-down lists have square corners.
 5. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
 
 If you delete or move `Nightseed.qbtheme` later, qBittorrent falls back to its default look.
