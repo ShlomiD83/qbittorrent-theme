@@ -1,8 +1,10 @@
-# Publishes Nightseed.qbtheme as a new GitHub release whenever the committed file
-# changes on main. Older releases are kept; this link always serves the newest:
+# Publishes Nightseed.qbtheme and Nightseed-Alternative.qbtheme as a new GitHub release
+# whenever either committed file changes on main. Older releases are kept; these links
+# always serve the newest:
 # https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed.qbtheme
+# https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-Alternative.qbtheme
 #
-# It publishes the file exactly as committed, so rebuild it first
+# It publishes the files exactly as committed, so rebuild them first
 # (python tools/build_theme.py) after changing source/.
 
 name: Release theme
@@ -12,6 +14,7 @@ on:
     branches: [main]
     paths:
       - Nightseed.qbtheme
+      - Nightseed-Alternative.qbtheme
       - .github/workflows/release.yml
   workflow_dispatch: # "Run workflow" button on the Actions tab
 
@@ -28,30 +31,40 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      ASSET: Nightseed.qbtheme
+      ASSETS: Nightseed.qbtheme Nightseed-Alternative.qbtheme
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # all history and tags, for the version check and the notes
 
-      - name: Check the file is a Qt resource bundle
+      - name: Check the files are Qt resource bundles
         run: |
-          if [ "$(head -c 4 "$ASSET")" != "qres" ]; then
-            echo "::error::$ASSET is not a Qt binary resource file"
-            exit 1
-          fi
+          for asset in $ASSETS; do
+            if [ "$(head -c 4 "$asset")" != "qres" ]; then
+              echo "::error::$asset is not a Qt binary resource file"
+              exit 1
+            fi
+          done
 
-      - name: Publish a release if the file differs from the latest one
+      - name: Publish a release if either file differs from the latest one
         run: |
           set -euo pipefail
 
+          # A file counts as changed when the latest release lacks it or has a different copy
           prev=$(gh release view --json tagName --jq .tagName 2>/dev/null || true)
-          if [ -n "$prev" ] &&
-             gh release download "$prev" --pattern "$ASSET" --output "$RUNNER_TEMP/prev.qbtheme" &&
-             cmp -s "$ASSET" "$RUNNER_TEMP/prev.qbtheme"; then
-            echo "$ASSET is the same as in $prev; nothing to publish."
+          changed=""
+          for asset in $ASSETS; do
+            if [ -z "$prev" ] ||
+               ! gh release download "$prev" --pattern "$asset" --output "$RUNNER_TEMP/prev-$asset" ||
+               ! cmp -s "$asset" "$RUNNER_TEMP/prev-$asset"; then
+              changed="$changed $asset"
+            fi
+          done
+          if [ -z "$changed" ]; then
+            echo "Both files are the same as in $prev; nothing to publish."
             exit 0
           fi
+          echo "Changed:$changed"
 
           # Date-based version: v2026.11.14, then v2026.11.14.2 for a second release that day
           base="v$(date -u +%Y.%m.%d)"
@@ -66,15 +79,16 @@ jobs:
             if [ -n "$prev" ]; then
               echo "Changes since $prev:"
               echo
-              git log --format='- %s' "$prev..HEAD" -- source "$ASSET" || true
+              git log --format='- %s' "$prev..HEAD" -- source tools/build_theme.py $ASSETS || true
             else
               echo "First release."
             fi
             echo
-            echo "To install, download **$ASSET** below and follow the [install steps](https://github.com/$GITHUB_REPOSITORY#install)."
+            echo "To install, download **Nightseed.qbtheme** (or **Nightseed-Alternative.qbtheme**, see [Two versions](https://github.com/$GITHUB_REPOSITORY#two-versions)) below and follow the [install steps](https://github.com/$GITHUB_REPOSITORY#install)."
           } > "$RUNNER_TEMP/notes.md"
 
-          gh release create "$tag" "$ASSET" \
+          # $ASSETS is unquoted on purpose: one argument per file
+          gh release create "$tag" $ASSETS \
             --target "$GITHUB_SHA" \
             --title "Nightseed ${tag#v}" \
             --notes-file "$RUNNER_TEMP/notes.md" \

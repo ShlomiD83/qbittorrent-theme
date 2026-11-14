@@ -24,12 +24,27 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
   <a href="assets/originals/07-add-torrent.png?raw=true"><img src="assets/compressed/07-add-torrent.webp" width="49%" alt="Add torrent dialog"></a>
 </p>
 
+## Two versions
+
+Each release has two theme files, built from the same source:
+
+- **Nightseed** (`Nightseed.qbtheme`) is the look in the screenshots. Rows are
+  coloured by torrent state, and the progress bars keep the theme's rounded green
+  gradient whatever the state.
+- **Nightseed Alternative** (`Nightseed-Alternative.qbtheme`) adds a state icon
+  at the start of each row, and its progress bars can take each state's colour
+  too (step 5 of [Install](#install)). For that, qBittorrent draws the bars itself:
+  they have smaller corners and a thin outline, in the transfer list and in file
+  lists. Downloading and seeding rows use a slightly darker green and blue, so
+  the percentage stays readable on a coloured bar.
+
 ## Install
 
 1. Download [**Nightseed.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed.qbtheme)
-   from the latest release.
+   or [**Nightseed-Alternative.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-Alternative.qbtheme)
+   from the latest release (see [Two versions](#two-versions)).
 2. Open qBittorrent → **Tools → Options → Behavior → Interface**.
-3. Tick **Use custom UI Theme** and browse to the downloaded **`Nightseed.qbtheme`**.
+3. Tick **Use custom UI Theme** and browse to the downloaded **`.qbtheme`** file.
 4. In the same section, set **Style: System** (recommended) and **Color scheme:
    Dark** (for a dark title bar).
    - **Fusion** works too, and qBittorrent itself recommends it for Windows dark
@@ -38,23 +53,26 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
    torrent states** ticked (it is by default). Each row is then coloured by its
    torrent's state: green downloading, blue seeding, purple completed, grey
    stopped, red errored. Untick it for plain white rows.
-   - **Make progress bars follow text colors**, just below it, does nothing with
-     this theme: the bars stay green (grey when stopped or errored). See
+   - **Make progress bars follow text colors**, just below it: with **Nightseed
+     Alternative**, tick it to colour the bars by state too. With **Nightseed**
+     it does nothing, and the bars stay green (grey when stopped or errored). See
      [Known limitations](#known-limitations).
-   - Both settings are new in qBittorrent 5.2. Older versions always colour the rows.
+   - Both settings are new in qBittorrent 5.2. Older versions always colour the
+     rows and never the bars.
 6. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
 
-If you delete or move `Nightseed.qbtheme` later, qBittorrent falls back to its default look.
+If you delete or move the theme file later, qBittorrent falls back to its default look.
 
 ## Known limitations
 
-- **Progress bar colours**: the bars stay green whatever the torrent's state
-  (grey when stopped or errored). qBittorrent's *Make progress bars follow text
-  colors* only works when Qt draws the bars itself, and a theme can't tell
-  whether you ticked it, so supporting it would swap these rounded bars for Qt's
-  plainer ones for everyone.
-- **State icons** in the Name column are hidden on purpose. Row colours show the
-  state instead (step 5 of [Install](#install)).
+- **Progress bar colours**: in **Nightseed** the bars stay green whatever the
+  torrent's state (grey when stopped or errored). qBittorrent's *Make progress
+  bars follow text colors* only works when Qt draws the bars itself, and a theme
+  can't tell whether you ticked it. So a theme that supports it gets Qt's plainer
+  bars for everyone, ticked or not. That is the trade-off **Nightseed Alternative**
+  makes: without the tick, its bars are plain green, stopped and errored ones too.
+- **State icons** in the Name column are hidden on purpose in **Nightseed**, and
+  row colours show the state instead. **Nightseed Alternative** shows them.
 - **Shared icons**: a theme gets one icon per id. The toolbar *Resume* button
   and the sidebar *Running* filter share one (white here). *Downloading* and
   *Seeding* share theirs with the status bar's download and upload speeds (the
