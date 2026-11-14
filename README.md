@@ -10,9 +10,15 @@ colour-coded Material icons in Apple's palette.
 
 [![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](assets/compressed/01-hero.webp)](assets/originals/01-hero.png?raw=true)
 
-Tested on **qBittorrent 5.3.0 (Qt 6.11) and 5.2.3 (Qt 6.10) on Windows 11**. It
-targets qBittorrent 5.x. It should also load on 4.6.x (also Qt 6), but that is
-untested.
+Nightseed is for the **qBittorrent desktop app**. It is tested on
+**qBittorrent 5.3.0 (Qt 6.11) and 5.2.3 (Qt 6.10) on Windows 11** and targets
+qBittorrent 5.x. It should also load on 4.6.x (also Qt 6) and in the macOS and
+Linux versions of qBittorrent, but those are untested. On macOS the menus sit in
+the system menu bar and the toolbar joins the title bar, so the top of the window
+won't look like the screenshots.
+
+It doesn't work with the **Web UI**. That's a qBittorrent limitation: themes only
+apply to the desktop app, and the Web UI can't load them.
 
 ## Screenshots
 
