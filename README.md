@@ -7,7 +7,7 @@ of them sit on a near-black canvas with the transfer list. It has green gradient
 progress bars, rounded row and pill-shaped selections, and colour-coded Material
 icons in Apple's palette.
 
-![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](showcase/01-hero.webp)
+[![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](assets/compressed/01-hero.webp)](assets/originals/01-hero.png?raw=true)
 
 Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
 5.x. It should also load on 4.6.x (also Qt 6), but that is untested.
@@ -15,12 +15,12 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
 ## Screenshots
 
 <p align="center">
-  <img src="showcase/02-transfers.webp" width="49%" alt="Transfer list with gradient progress bars">
-  <img src="showcase/03-filters.webp" width="49%" alt="Sidebar filters with pill-shaped selections">
-  <img src="showcase/04-details.webp" width="49%" alt="Details panel with the speed graph">
-  <img src="showcase/05-menus.webp" width="49%" alt="Right-click menu and a submenu">
-  <img src="showcase/06-settings.webp" width="49%" alt="Options dialog, Behavior page">
-  <img src="showcase/07-add-torrent.webp" width="49%" alt="Add torrent dialog">
+  <a href="assets/originals/02-transfers.png?raw=true"><img src="assets/compressed/02-transfers.webp" width="49%" alt="Transfer list with gradient progress bars"></a>
+  <a href="assets/originals/03-filters.png?raw=true"><img src="assets/compressed/03-filters.webp" width="49%" alt="Sidebar filters with pill-shaped selections"></a>
+  <a href="assets/originals/04-details.png?raw=true"><img src="assets/compressed/04-details.webp" width="49%" alt="Details panel with the speed graph"></a>
+  <a href="assets/originals/05-menus.png?raw=true"><img src="assets/compressed/05-menus.webp" width="49%" alt="Right-click menu and a submenu"></a>
+  <a href="assets/originals/06-settings.png?raw=true"><img src="assets/compressed/06-settings.webp" width="49%" alt="Options dialog, Behavior page"></a>
+  <a href="assets/originals/07-add-torrent.png?raw=true"><img src="assets/compressed/07-add-torrent.webp" width="49%" alt="Add torrent dialog"></a>
 </p>
 
 ## Install
@@ -100,9 +100,12 @@ source/
 tools/
   make_icons.py       regenerates icons/ and ui/ from the mapping inside it
   build_theme.py      packs source/ into Nightseed.qbtheme and verifies it
-  make_webp.py        writes the .webp copies of the showcase/ screenshots
+  make_webp.py        writes assets/compressed/ from assets/originals/
   material-icons/     Material Icons (Round) sources + Apache-2.0 LICENSE
-showcase/             .png screenshots + the .webp copies this README shows
+assets/
+  social-preview.png  link-preview image (Settings → Social preview)
+  originals/          full-quality .png screenshots
+  compressed/         their .webp copies, which this README shows
 .github/workflows/
   release.yml         publishes each changed Nightseed.qbtheme as a release
 ```
@@ -122,9 +125,10 @@ showcase/             .png screenshots + the .webp copies this README shows
 - **Publish**: push the rebuilt `Nightseed.qbtheme` to `main`. A GitHub Action
   then publishes it as a new release; the download link under Install always
   serves the newest one, and older releases stay available.
-- **Screenshots**: after replacing a PNG in `showcase/`, run
-  `python tools/make_webp.py` (needs `pip install Pillow`) to refresh the
-  .webp copy the README shows.
+- **Screenshots**: after replacing a PNG in `assets/originals/`, run
+  `python tools/make_webp.py` (needs `pip install Pillow`) to refresh its
+  .webp copy in `assets/compressed/`. The README shows the copies, and each
+  one links to its original.
 
 Note for anyone building themes by hand: qBittorrent mounts a `.qbtheme` at
 `:/uitheme` itself. The `.qrc` must therefore not add a `/uitheme` prefix,
