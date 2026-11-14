@@ -12,10 +12,10 @@ colour-coded Material icons in Apple's palette.
 
 Nightseed is for the **qBittorrent desktop app**. It is tested on
 **qBittorrent 5.3.0 (Qt 6.11) and 5.2.3 (Qt 6.10) on Windows 11** and targets
-qBittorrent 5.x. It should also load on 4.6.x (also Qt 6) and in the macOS and
-Linux versions of qBittorrent, but those are untested. On macOS the menus sit in
-the system menu bar and the toolbar joins the title bar, so the top of the window
-won't look like the screenshots.
+qBittorrent 5.x. It has also been reported to work on **macOS**. There the menus
+sit in the system menu bar and the toolbar joins the title bar, so the top of the
+window looks different from the screenshots. It should also load on 4.6.x (also
+Qt 6) and on Linux, but those are untested.
 
 It doesn't work with the **Web UI**. That's a qBittorrent limitation: themes only
 apply to the desktop app, and the Web UI can't load them.
