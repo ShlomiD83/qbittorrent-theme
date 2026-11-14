@@ -10,13 +10,14 @@ colour-coded Material icons in Apple's palette.
 
 [![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](assets/compressed/01-hero.webp)](assets/originals/01-hero.png?raw=true)
 
-Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
-5.x. It should also load on 4.6.x (also Qt 6), but that is untested.
+Tested on **qBittorrent 5.3.0 (Qt 6.11) and 5.2.3 (Qt 6.10) on Windows 11**. It
+targets qBittorrent 5.x. It should also load on 4.6.x (also Qt 6), but that is
+untested.
 
 ## Screenshots
 
 <p align="center">
-  <a href="assets/originals/02-transfers.png?raw=true"><img src="assets/compressed/02-transfers.webp" width="49%" alt="Transfer list with gradient progress bars"></a>
+  <a href="assets/originals/02-transfers.png?raw=true"><img src="assets/compressed/02-transfers.webp" width="49%" alt="Transfer list with gradient progress bars, with row colours on (the default) and off"></a>
   <a href="assets/originals/03-filters.png?raw=true"><img src="assets/compressed/03-filters.webp" width="49%" alt="Sidebar filters with pill-shaped selections"></a>
   <a href="assets/originals/04-details.png?raw=true"><img src="assets/compressed/04-details.webp" width="49%" alt="Details panel with the speed graph"></a>
   <a href="assets/originals/05-menus.png?raw=true"><img src="assets/compressed/05-menus.webp" width="49%" alt="Right-click menu and a submenu"></a>
@@ -28,15 +29,22 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
 
 Each release has two theme files, built from the same source:
 
-- **Nightseed** (`Nightseed.qbtheme`) is the look in the screenshots. Rows are
-  coloured by torrent state, and the progress bars keep the theme's rounded green
-  gradient whatever the state.
+- **Nightseed** (`Nightseed.qbtheme`) is the theme in the screenshots above. Its
+  rows are coloured by torrent state by default, and you can switch that off
+  (step 5 of [Install](#install)). The transfer list screenshot shows both; the
+  others have it off. The progress bars keep the theme's rounded green gradient
+  whatever the state.
 - **Nightseed Alternative** (`Nightseed-Alternative.qbtheme`) adds a state icon
   at the start of each row, and its progress bars can take each state's colour
   too (step 5 of [Install](#install)). For that, qBittorrent draws the bars itself:
   they have smaller corners and a thin outline, in the transfer list and in file
   lists. Downloading and seeding rows use a slightly darker green and blue, so
   the percentage stays readable on a coloured bar.
+
+<p align="center">
+  <a href="assets/originals/08-alternative.png?raw=true"><img src="assets/compressed/08-alternative.webp" width="49%" alt="Nightseed Alternative: state icons, and rows and progress bars coloured by state"></a>
+  <a href="assets/originals/09-alternative-settings.png?raw=true"><img src="assets/compressed/09-alternative-settings.webp" width="49%" alt="Nightseed Alternative: both Transfer List colour settings ticked in Options"></a>
+</p>
 
 ## Install
 
