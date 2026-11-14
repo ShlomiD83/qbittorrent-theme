@@ -729,7 +729,9 @@ TransferListWidget {
     qproperty-iconSize: 0px 0px;
 }
 
-/* no 'color' here: row text colours come from config.json (TransferList.*) */
+/* no 'color' here: row text colours come from config.json (TransferList.*), one per
+   torrent state. Users who want plain white rows untick Options > Behavior > "Use
+   different text colors by torrent states" (on by default). */
 TransferListWidget::item {
     border: none;
     height: 22px;
@@ -801,6 +803,10 @@ QProgressBar {
     margin: 9px 10px 6px 10px;
 }
 
+/* This rule paints the chunk itself, so qBittorrent's "Make progress bars follow text
+   colors" (5.2+) has no effect: the setting only changes the palette colour, which a
+   stylesheet rule never reads. Without the rule the setting would work, but Qt's Fusion
+   style would then draw every bar (2px corners, an outline, thinner), ticked or not. */
 QProgressBar::chunk {
     border-radius: 6px;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #1C7C3E, stop: 1 #279A4A);

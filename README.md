@@ -5,8 +5,8 @@ A dark qBittorrent theme inspired by Ario Seno's
 on Dribbble. The menus and toolbar share one floating rounded card. The sidebar
 and the torrent details panel are cards too, and all of them sit on a
 near-black canvas with the transfer list. It has green gradient progress bars,
-rounded row and pill-shaped selections, and colour-coded Material icons in
-Apple's palette.
+rows coloured by torrent state, rounded row and pill-shaped selections, and
+colour-coded Material icons in Apple's palette.
 
 [![Nightseed: qBittorrent with the theme, showing the transfer list, sidebar and toolbar](assets/compressed/01-hero.webp)](assets/originals/01-hero.png?raw=true)
 
@@ -34,17 +34,31 @@ Tested on **qBittorrent 5.2.3 (Qt 6.10) on Windows 11**. It targets qBittorrent
    Dark** (for a dark title bar).
    - **Fusion** works too, and qBittorrent itself recommends it for Windows dark
      mode, but with this theme its menus and drop-down lists have square corners.
-5. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
+5. On the same page, under **Transfer List**, keep **Use different text colors by
+   torrent states** ticked (it is by default). Each row is then coloured by its
+   torrent's state: green downloading, blue seeding, purple completed, grey
+   stopped, red errored. Untick it for plain white rows.
+   - **Make progress bars follow text colors**, just below it, does nothing with
+     this theme: the bars stay green (grey when stopped or errored). See
+     [Known limitations](#known-limitations).
+   - Both settings are new in qBittorrent 5.2. Older versions always colour the rows.
+6. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
 
 If you delete or move `Nightseed.qbtheme` later, qBittorrent falls back to its default look.
 
 ## Known limitations
 
-- **State icons** in the Name column are hidden on purpose. Row colours show
-  state instead: grey for stopped, red for errors.
+- **Progress bar colours**: the bars stay green whatever the torrent's state
+  (grey when stopped or errored). qBittorrent's *Make progress bars follow text
+  colors* only works when Qt draws the bars itself, and a theme can't tell
+  whether you ticked it, so supporting it would swap these rounded bars for Qt's
+  plainer ones for everyone.
+- **State icons** in the Name column are hidden on purpose. Row colours show the
+  state instead (step 5 of [Install](#install)).
 - **Shared icons**: a theme gets one icon per id. The toolbar *Resume* button
-  and the sidebar *Running* filter share one (white here). *Seeding* and the
-  status-bar upload speed also share one (the blue cloud).
+  and the sidebar *Running* filter share one (white here). *Downloading* and
+  *Seeding* share theirs with the status bar's download and upload speeds (the
+  green and blue arrows).
 - **Details panel tab buttons** (General, Trackers, …) sit just below the details
   card rather than inside it. qBittorrent gives them no container a theme could
   draw as part of the card.

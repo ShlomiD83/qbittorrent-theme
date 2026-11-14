@@ -29,6 +29,9 @@ RED = "#FF3B30"
 PURPLE = "#BF5AF2"
 TEAL = "#64D2FF"
 INDIGO = "#7D7AFF"
+# Completed: qBittorrent's own dark-mode colour for completed torrents (Primer "done",
+# src/gui/color.h). config.json uses it for the Completed row text too.
+DONE_PURPLE = "#A371F7"
 
 # The qBittorrent logo is a #72B4F5 -> #356EBF gradient
 # (dist/unix/menuicons/scalable/apps/qbittorrent.svg). Checkbox / radio fills use the
@@ -66,8 +69,12 @@ CUSTOM = {
     "go-bottom": '<rect x="5" y="18.2" width="14" height="2.2" rx="1.1"/>' + stroke("M7 7.8l5 5 5-5", 2.3),
     "go-up": '<path d="M2.6 16.4 12 6.9l9.4 9.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>',
     "go-down": '<path d="M2.6 7.6h18.8L12 17.1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>',
+    # one thin plain arrow for the Downloading, Seeding and Moving states (sidebar
+    # filters; the status bar speeds and a few actions share these ids too)
+    "downloading": stroke("M12 4.6V19.2M6.9 14.1 12 19.2l5.1-5.1", 2.0),
+    "upload": stroke("M12 19.4V4.8M6.9 9.9 12 4.8l5.1 5.1", 2.0),
+    "set-location": stroke("M4.8 12h14.6M14.3 6.9l5.1 5.1-5.1 5.1", 2.0),
     # thin download arrow standing on a base line
-    "downloading": stroke("M12 3.2v12.3M7.2 10.9l4.8 4.8 4.8-4.8", 2.0) + '<rect x="5" y="19.2" width="14" height="2" rx="1"/>',
     "download": stroke("M12 3.2v12.3M7.2 10.9l4.8 4.8 4.8-4.8", 2.0) + '<rect x="5" y="19.2" width="14" height="2" rx="1"/>',
     # vertical equaliser sliders (Trackers tab)
     "trackers": (stroke("M5 3.5v17M9.7 3.5v17M14.3 3.5v17M19 3.5v17", 1.7)
@@ -100,8 +107,8 @@ ICON_MAP = {
     # --- status filters (sidebar)
     "filter-all": ("folder", YELLOW),
     "downloading": ("@custom", GREEN),
-    "upload": ("cloud_upload", BLUE),
-    "checked-completed": ("check", GREEN),
+    "upload": ("@custom", BLUE),
+    "checked-completed": ("check", DONE_PURPLE),
     "stopped": ("pause", PINK),
     "paused": ("pause_circle", PINK),
     "filter-active": ("star", ORANGE),
@@ -110,7 +117,7 @@ ICON_MAP = {
     "stalledUP": ("arrow_circle_up", BLUE),
     "stalledDL": ("arrow_circle_down", GREEN),
     "force-recheck": ("autorenew", PURPLE),
-    "set-location": ("drive_file_move", TEAL),
+    "set-location": ("@custom", TEAL),
     "error": ("priority_high", RED),
     "queued": ("schedule", "#A1A1A6"),
     # --- properties tab bar
