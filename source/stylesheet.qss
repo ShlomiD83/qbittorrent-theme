@@ -854,13 +854,12 @@ PropertiesWidget > QPushButton:hover {
     color: #FFFFFF;
 }
 
-PropertiesWidget > QPushButton:checked {
+/* the current tab: qBittorrent marks it by holding its button down (PropTabBar calls
+   setDown(true); the buttons are never checkable), and Qt styles a button that is
+   down as :pressed, never :checked. A click on another tab flashes the same colour. */
+PropertiesWidget > QPushButton:pressed {
     background-color: #333333;
     color: #FFFFFF;
-}
-
-PropertiesWidget > QPushButton:pressed {
-    background-color: #3A3A3A;
 }
 
 /* the details card: 8px below the list (with the 4px splitter handle), right edge

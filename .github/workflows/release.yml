@@ -1,8 +1,10 @@
-# Publishes Nightseed.qbtheme and Nightseed-Alternative.qbtheme as a new GitHub release
-# whenever either committed file changes on main. Older releases are kept; these links
+# Publishes the four theme files (Nightseed, Alternative, OLED, Transparent) as a new GitHub
+# release whenever any committed file changes on main. Older releases are kept; these links
 # always serve the newest:
 # https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed.qbtheme
 # https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-Alternative.qbtheme
+# https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-OLED.qbtheme
+# https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-Transparent.qbtheme
 #
 # It publishes the files exactly as committed, so rebuild them first
 # (python tools/build_theme.py) after changing source/.
@@ -15,6 +17,8 @@ on:
     paths:
       - Nightseed.qbtheme
       - Nightseed-Alternative.qbtheme
+      - Nightseed-OLED.qbtheme
+      - Nightseed-Transparent.qbtheme
       - .github/workflows/release.yml
   workflow_dispatch: # "Run workflow" button on the Actions tab
 
@@ -31,7 +35,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      ASSETS: Nightseed.qbtheme Nightseed-Alternative.qbtheme
+      ASSETS: Nightseed.qbtheme Nightseed-Alternative.qbtheme Nightseed-OLED.qbtheme Nightseed-Transparent.qbtheme
     steps:
       - uses: actions/checkout@v7
         with:
@@ -46,7 +50,7 @@ jobs:
             fi
           done
 
-      - name: Publish a release if either file differs from the latest one
+      - name: Publish a release if any file differs from the latest one
         run: |
           set -euo pipefail
 
@@ -61,7 +65,7 @@ jobs:
             fi
           done
           if [ -z "$changed" ]; then
-            echo "Both files are the same as in $prev; nothing to publish."
+            echo "All files are the same as in $prev; nothing to publish."
             exit 0
           fi
           echo "Changed:$changed"
@@ -84,7 +88,7 @@ jobs:
               echo "First release."
             fi
             echo
-            echo "To install, download **Nightseed.qbtheme** (or **Nightseed-Alternative.qbtheme**, see [Two versions](https://github.com/$GITHUB_REPOSITORY#two-versions)) below and follow the [install steps](https://github.com/$GITHUB_REPOSITORY#install)."
+            echo "To install, download one of the theme files below (see [Four versions](https://github.com/$GITHUB_REPOSITORY#four-versions)) and follow the [install steps](https://github.com/$GITHUB_REPOSITORY#install)."
           } > "$RUNNER_TEMP/notes.md"
 
           # $ASSETS is unquoted on purpose: one argument per file

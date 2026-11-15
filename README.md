@@ -31,9 +31,9 @@ apply to the desktop app, and the Web UI can't load them.
   <a href="assets/originals/07-add-torrent.png?raw=true"><img src="assets/compressed/07-add-torrent.webp" width="49%" alt="Add torrent dialog"></a>
 </p>
 
-## Two versions
+## Four versions
 
-Each release has two theme files, built from the same source:
+Each release has four theme files, built from the same source:
 
 - **Nightseed** (`Nightseed.qbtheme`) is the theme in the screenshots above. Its
   rows are coloured by torrent state by default, and you can switch that off
@@ -46,17 +46,39 @@ Each release has two theme files, built from the same source:
   they have smaller corners and a thin outline, in the transfer list and in file
   lists. Downloading and seeding rows use a slightly darker green and blue, so
   the percentage stays readable on a coloured bar.
+- **Nightseed OLED** (`Nightseed-OLED.qbtheme`) is Nightseed on true black: the
+  canvas and the transfer list are `#000000` instead of `#121212`, so an OLED
+  screen switches those pixels off. Everything else matches Nightseed, so the
+  cards stand out a little more.
+- **Nightseed Transparent** (`Nightseed-Transparent.qbtheme`) lets whatever is
+  behind qBittorrent show through, blurred. The theme makes its backgrounds
+  see-through, but the blur itself comes from a separate tool on Windows 11:
+  either the [Windhawk](https://windhawk.net) mod
+  [Translucent Windows](https://windhawk.net/mods/translucent-windows) (its
+  default Blur, or Acrylic or Mica), or
+  [Mica For Everyone](https://github.com/MicaForEveryone/MicaForEveryone) with a
+  rule for `qbittorrent.exe` set to Mica or Acrylic, with **Extend frame into
+  client area** on. Without one of them, the see-through parts are black. See
+  [Known limitations](#known-limitations).
 
 <p align="center">
   <a href="assets/originals/08-alternative.png?raw=true"><img src="assets/compressed/08-alternative.webp" width="49%" alt="Nightseed Alternative: state icons, and rows and progress bars coloured by state"></a>
   <a href="assets/originals/09-alternative-settings.png?raw=true"><img src="assets/compressed/09-alternative-settings.webp" width="49%" alt="Nightseed Alternative: both Transfer List colour settings ticked in Options"></a>
 </p>
 
+<p align="center">
+  <a href="assets/originals/10-oled.png?raw=true"><img src="assets/compressed/10-oled.webp" width="49%" alt="Nightseed OLED: the canvas and transfer list in pure black"></a>
+  <a href="assets/originals/11-transparent.png?raw=true"><img src="assets/compressed/11-transparent.webp" width="49%" alt="Nightseed Transparent with the Windhawk Translucent Windows mod: the wallpaper shows through the window, blurred"></a>
+</p>
+
 ## Install
 
-1. Download [**Nightseed.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed.qbtheme)
-   or [**Nightseed-Alternative.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-Alternative.qbtheme)
-   from the latest release (see [Two versions](#two-versions)).
+1. Download one theme file from the latest release (see
+   [Four versions](#four-versions)):
+   [**Nightseed.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed.qbtheme),
+   [**Nightseed-Alternative.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-Alternative.qbtheme),
+   [**Nightseed-OLED.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-OLED.qbtheme)
+   or [**Nightseed-Transparent.qbtheme**](https://github.com/Xtenso/qbittorrent-theme/releases/latest/download/Nightseed-Transparent.qbtheme).
 2. Open qBittorrent → **Tools → Options → Behavior → Interface**.
 3. Tick **Use custom UI Theme** and browse to the downloaded **`.qbtheme`** file.
 4. In the same section, set **Style: System** (recommended) and **Color scheme:
@@ -68,9 +90,9 @@ Each release has two theme files, built from the same source:
    torrent's state: green downloading, blue seeding, purple completed, grey
    stopped, red errored. Untick it for plain white rows.
    - **Make progress bars follow text colors**, just below it: with **Nightseed
-     Alternative**, tick it to colour the bars by state too. With **Nightseed**
-     it does nothing, and the bars stay green (grey when stopped or errored). See
-     [Known limitations](#known-limitations).
+     Alternative**, tick it to colour the bars by state too. With the other three
+     versions it does nothing, and the bars stay green (grey when stopped or
+     errored). See [Known limitations](#known-limitations).
    - Both settings are new in qBittorrent 5.2. Older versions always colour the
      rows and never the bars.
 6. Click **OK** and **restart qBittorrent**. Themes are only loaded at start-up.
@@ -87,6 +109,13 @@ If you delete or move the theme file later, qBittorrent falls back to its defaul
   makes: without the tick, its bars are plain green, stopped and errored ones too.
 - **State icons** in the Name column are hidden on purpose in **Nightseed**, and
   row colours show the state instead. **Nightseed Alternative** shows them.
+- **Nightseed Transparent** needs one of the tools in
+  [Four versions](#four-versions): qBittorrent can't blur what's behind its
+  window by itself. Menus, drop-down lists and tooltips stay solid, because
+  they are separate windows that these tools leave alone. With a bright window
+  right behind qBittorrent, white text gets hard to read.
+- **Nightseed OLED**: Windows draws the title bar, so it stays dark grey rather
+  than black.
 - **Shared icons**: a theme gets one icon per id. The toolbar *Resume* button
   and the sidebar *Running* filter share one (white here). *Downloading* and
   *Seeding* share theirs with the status bar's download and upload speeds (the
